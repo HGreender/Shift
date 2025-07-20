@@ -1,6 +1,8 @@
 import requests
 from typing import Dict, Any
 
+from src.mylibs.utils import validate_date
+
 class Extractor:
     def __init__(
             self, start_date: str, end_date: str,
@@ -24,6 +26,7 @@ class Extractor:
 
     @start_date.setter
     def start_date(self, value: str):
+        validate_date(value)
         self.__start_date = value
 
     @property
@@ -32,6 +35,7 @@ class Extractor:
 
     @end_date.setter
     def end_date(self, value: str):
+        validate_date(value)
         self.__end_date = value
 
     @property
@@ -40,6 +44,8 @@ class Extractor:
 
     @latitude.setter
     def latitude(self, value: float):
+        if not (-90 <= value <= 90):
+            raise ValueError('latitude must be from -90 to 90')
         self.__latitude = value
 
     @property
@@ -48,11 +54,13 @@ class Extractor:
 
     @longitude.setter
     def longitude(self, value: float):
+        if not (-180 <= value <= 180):
+            raise ValueError('longitude must be from -180 to 180')
         self.__longitude = value
 
     @property
     def _params(self) -> Dict[str, Any]:
-        return {
+        params = {
             "latitude": self.__latitude,
             "longitude": self.__longitude,
             "daily": self._DAILY_PARAMS,
@@ -65,6 +73,7 @@ class Extractor:
             "start_date": self.__start_date,
             "end_date": self.__end_date
         }
+        return params
 
     def run(self) -> Dict[str, Any]:
         try:
