@@ -1,7 +1,7 @@
-def validate_date(date_str: str) -> None:
+import datetime
+
+def validate_date(date_text: str):
     try:
-        datetime.strptime(date_str, '%Y-%m-%d').date()
+        datetime.datetime.strptime(date_text, '%Y-%m-%d')
     except ValueError:
-        raise ValueError(
-            f"Given '{date_str}'. Expected: 'YYYY-MM-DD'."
-        )
+        raise ValueError(f"Given: {date_text}. Expected: YYYY-MM-DD")
