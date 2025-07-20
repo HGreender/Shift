@@ -1,7 +1,7 @@
 import requests
 from typing import Dict, Any
 
-from src.mylibs.utils import validate_date
+from src.utils.validators import validate_date
 
 class Extractor:
     def __init__(
