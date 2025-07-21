@@ -40,6 +40,7 @@ class Extractor:
         validate_date(value)
         self.__end_date = value
 
+    # TODO: Перенести валидацию широты и долготы в validators.py
     @property
     def latitude(self) -> float:
         return self.__latitude

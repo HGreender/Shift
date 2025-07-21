@@ -15,6 +15,7 @@ class Transformer:
 
     @data.setter
     def data(self, value: Dict[str, Any]):
+        # TODO: Перенести валидацию Transformer.data в validators.py
         if not isinstance(value, dict) or 'hourly' not in value or 'daily' not in value:
             raise ValueError("Transformer ValueError")
         self.__data = value
