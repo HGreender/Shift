@@ -1,19 +1,29 @@
 import pandas as pd
 
-
-def hourly_date_convert(data: pd.DataFrame) -> pd.DataFrame:
-    df = pd.DataFrame()
-    df['time'] = pd.to_datetime(data['time'], unit='s', utc=True)
-    df['date'] = df['time'].dt.date
-    return df
+KNOTS_TO_MS = 0.514444
+INCH_TO_MM = 25.4
+FEET_TO_M = 0.3048
 
 
-def daily_date_convert(data: pd.DataFrame) -> pd.DataFrame:
-    df = pd.DataFrame()
-    df['date'] = pd.to_datetime(data['time'], unit='s', utc=True).dt.date
-    df['sunrise_iso'] = pd.to_datetime(data['sunrise'], unit='s', utc=True).dt.strftime(
-        '%Y-%m-%dT%H:%M:%SZ')
-    df['sunset_iso'] = pd.to_datetime(data['sunset'], unit='s', utc=True).dt.strftime(
-        '%Y-%m-%dT%H:%M:%SZ')
-    df['daylight_hours'] = data['daylight_duration'] / 3600
-    return df
+def fahrenheit_to_celsius(temp_f: float) -> float | None:
+    if pd.isna(temp_f):
+        return None
+    return (temp_f - 32) * 5 / 9
+
+
+def knots_to_ms(speed_kn: float) -> float | None:
+    if pd.isna(speed_kn):
+        return None
+    return speed_kn * KNOTS_TO_MS
+
+
+def inches_to_mm(precip_in: float) -> float | None:
+    if pd.isna(precip_in):
+        return None
+    return precip_in * INCH_TO_MM
+
+
+def feet_to_meters(dist_ft: float) -> float | None:
+    if pd.isna(dist_ft):
+        return None
+    return dist_ft * FEET_TO_M
