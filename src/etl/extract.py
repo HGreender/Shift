@@ -82,8 +82,10 @@ class Extractor:
             response = requests.get(self._base_url, params=self._params)
             response.raise_for_status()
             return response.json()
-        except (requests.exceptions.RequestException, ValueError) as error:
-            raise error
+        except requests.exceptions.RequestException:
+            raise
+        except ValueError:
+            raise ValueError('Failed to decode API response as JSON')
 
     @staticmethod
     def run_json_extraction(file_path: str) -> Dict[str, Any]:

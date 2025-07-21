@@ -1,5 +1,6 @@
 import datetime
 
+
 def validate_date(date_text: str):
     try:
         datetime.datetime.strptime(date_text, '%Y-%m-%d')
