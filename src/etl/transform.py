@@ -19,9 +19,10 @@ class Transformer:
             raise ValueError("Transformer ValueError")
         self.__data = value
 
-    try:
-        hourly_df = pd.DataFrame(self.__raw_data['hourly'])
-        daily_df = pd.DataFrame(self.__raw_data['daily'])
-    except (KeyError, TypeError) as error:
-        print(f"Ошибка Transformer: {error}")
-        raise error
+    def run(self):
+        try:
+            hourly_df = pd.DataFrame(self.__data['hourly'])
+            daily_df = pd.DataFrame(self.__data['daily'])
+        except (KeyError, TypeError) as error:
+            print(f"Transformer error: {error}")
+            raise
