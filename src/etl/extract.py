@@ -11,10 +11,14 @@ class Extractor:
             latitude: float = 55.0344, longitude: float = 82.9434
     ):
         self._DAILY_PARAMS = "sunrise,sunset,daylight_duration"
-        self._HOURLY_PARAMS = ("temperature_2m,relative_humidity_2m,dew_point_2m,"
-                          "apparent_temperature,temperature_80m,temperature_120m,"
-                          "wind_speed_10m,wind_speed_80m,"
-                          "visibility,rain,showers,snowfall")
+        self._HOURLY_PARAMS = ("temperature_2m,"
+                               "relative_humidity_2m,"
+                               "dew_point_2m,"
+                               "apparent_temperature,temperature_80m,temperature_120m,"
+                               "wind_speed_10m,wind_speed_80m,wind_direction_10m,wind_direction_80m,"
+                               "visibility,evapotranspiration,weather_code,"
+                               "soil_temperature_0cm,soil_temperature_6cm,"
+                               "rain,showers,snowfall")
         self.__start_date = start_date
         self.__end_date = end_date
         self.__latitude = latitude

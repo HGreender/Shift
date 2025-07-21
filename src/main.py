@@ -41,7 +41,7 @@ def main():
         def __init__(self):
             self.source = 'api'
             self.start_date = '2025-06-25'
-            self.end_date = '2025-06-26'
+            self.end_date = '2025-06-25'
 
     args = Args()
 

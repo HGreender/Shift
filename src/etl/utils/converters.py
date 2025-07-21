@@ -1,6 +1,6 @@
 import pandas as pd
 
-KNOTS_TO_MS = 0.514444
+KNOTS_TO_M_PER_S = 0.514444
 INCH_TO_MM = 25.4
 FEET_TO_M = 0.3048
 
@@ -11,10 +11,10 @@ def fahrenheit_to_celsius(temp_f: float) -> float | None:
     return (temp_f - 32) * 5 / 9
 
 
-def knots_to_ms(speed_kn: float) -> float | None:
+def knots_to_m_per_s(speed_kn: float) -> float | None:
     if pd.isna(speed_kn):
         return None
-    return speed_kn * KNOTS_TO_MS
+    return speed_kn * KNOTS_TO_M_PER_S
 
 
 def inches_to_mm(precip_in: float) -> float | None:
