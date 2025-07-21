@@ -15,8 +15,8 @@ class Extractor:
                           "apparent_temperature,temperature_80m,temperature_120m,"
                           "wind_speed_10m,wind_speed_80m,"
                           "visibility,rain,showers,snowfall")
-        self.__start_date = start_date
-        self.__end_date = end_date
+        self.__start_date = validate_date(start_date)
+        self.__end_date = validate_date(end_date)
         self.__latitude = latitude
         self.__longitude = longitude
 

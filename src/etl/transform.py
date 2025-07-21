@@ -18,3 +18,10 @@ class Transformer:
         if not isinstance(value, dict) or 'hourly' not in value or 'daily' not in value:
             raise ValueError("Transformer ValueError")
         self.__data = value
+
+    try:
+        hourly_df = pd.DataFrame(self.__raw_data['hourly'])
+        daily_df = pd.DataFrame(self.__raw_data['daily'])
+    except (KeyError, TypeError) as error:
+        print(f"Ошибка Transformer: {error}")
+        raise error
