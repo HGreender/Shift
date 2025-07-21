@@ -25,6 +25,8 @@ def run_pipeline(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--source', required=True, choices=['api', 'json'])
+    parser.add_argument('--target', required=True, choices=['csv', 'db'])
+    parser.add_argument('--file-path', help="Path to JSON-file")
     parser.add_argument('-start', '--start-date')
     parser.add_argument('-end', '--end-date')
 
