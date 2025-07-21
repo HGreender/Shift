@@ -83,7 +83,6 @@ class Extractor:
             response.raise_for_status()
             return response.json()
         except (requests.exceptions.RequestException, ValueError) as error:
-            print(f"Extractor error: {error}")
             raise error
 
     @staticmethod
