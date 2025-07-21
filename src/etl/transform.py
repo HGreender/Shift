@@ -24,6 +24,17 @@ class Transformer:
         try:
             hourly_df = pd.DataFrame(self.__data['hourly'])
             daily_df = pd.DataFrame(self.__data['daily'])
+
+            done_hourly_df = converters.hourly_date_convert(hourly_df)
+            done_daily_df = converters.daily_date_convert(daily_df)
+
+            merged_df = pd.merge(done_hourly_df, done_daily_df[['date', 'sunrise_iso', 'sunset_iso']], on='date')
+            merged_df.drop('date', axis=1, inplace=True)
+
+            return merged_df
         except (KeyError, TypeError) as error:
             print(f"Transformer error: {error}")
+            raise
+        except Exception as error:
+            print(f"Transformer unknown error: {error}")
             raise

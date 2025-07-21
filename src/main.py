@@ -16,26 +16,34 @@ def run_pipeline(args):
 
         transformer = Transformer(raw_data)
         transformed_df = transformer.run()
-        print(transformed_df)
+        print(transformed_df.to_string())
     except Exception as error:
         print(f'Error: {error}')
         sys.exit(1)
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--source', required=True, choices=['api', 'json'])
-    parser.add_argument('--target', required=True, choices=['csv', 'db'])
-    parser.add_argument('--file-path', help="Path to JSON-file")
-    parser.add_argument('-start', '--start-date')
-    parser.add_argument('-end', '--end-date')
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('-s', '--source', required=True, choices=['api', 'json'])
+    # # parser.add_argument('--target', required=True, choices=['csv', 'db'])
+    # parser.add_argument('--file-path', help="Path to JSON-file")
+    # parser.add_argument('-start', '--start-date')
+    # parser.add_argument('-end', '--end-date')
+    #
+    # args = parser.parse_args()
+    #
+    # if args.source == 'api' and (not args.start_date or not args.end_date):
+    #     parser.error("--start-date и --end-date обязательны для --source api.")
+    # if args.source == 'json' and not args.file_path:
+    #     parser.error("--file-path обязателен для --source json.")
 
-    args = parser.parse_args()
+    class Args:
+        def __init__(self):
+            self.source = 'api'
+            self.start_date = '2025-06-25'
+            self.end_date = '2025-06-26'
 
-    if args.source == 'api' and (not args.start_date or not args.end_date):
-        parser.error("--start-date и --end-date обязательны для --source api.")
-    if args.source == 'json' and not args.file_path:
-        parser.error("--file-path обязателен для --source json.")
+    args = Args()
 
     run_pipeline(args)
 
