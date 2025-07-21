@@ -1,3 +1,4 @@
+import json
 import requests
 from typing import Dict, Any
 
@@ -76,7 +77,7 @@ class Extractor:
         }
         return params
 
-    def run(self) -> Dict[str, Any]:
+    def run_api_extraction(self) -> Dict[str, Any]:
         try:
             response = requests.get(self._base_url, params=self._params)
             response.raise_for_status()
@@ -84,3 +85,12 @@ class Extractor:
         except (requests.exceptions.RequestException, ValueError) as error:
             print(f"Extractor error: {error}")
             raise error
+
+    @staticmethod
+    def run_json_extraction(file_path: str) -> Dict[str, Any]:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data
+        except (FileNotFoundError, json.JSONDecodeError):
+            raise
