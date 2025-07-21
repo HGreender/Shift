@@ -2,6 +2,28 @@ import pandas as pd
 from typing import Dict, Any
 from .utils import converters
 
+__all__ = [
+    'Transformer'
+]
+
+
+def hourly_date_transform(data: pd.DataFrame) -> pd.DataFrame:
+    df = pd.DataFrame()
+    df['time'] = pd.to_datetime(data['time'], unit='s', utc=True)
+    df['date'] = df['time'].dt.date
+    return df
+
+
+def daily_date_transform(data: pd.DataFrame) -> pd.DataFrame:
+    df = pd.DataFrame()
+    df['date'] = pd.to_datetime(data['time'], unit='s', utc=True).dt.date
+    df['sunrise_iso'] = pd.to_datetime(data['sunrise'], unit='s', utc=True).dt.strftime(
+        '%Y-%m-%dT%H:%M:%SZ')
+    df['sunset_iso'] = pd.to_datetime(data['sunset'], unit='s', utc=True).dt.strftime(
+        '%Y-%m-%dT%H:%M:%SZ')
+    df['daylight_hours'] = data['daylight_duration'] / 3600
+    return df
+
 
 class Transformer:
     def __init__(self, raw_data: Dict[str, Any]):
@@ -25,8 +47,8 @@ class Transformer:
             hourly_df = pd.DataFrame(self.__data['hourly'])
             daily_df = pd.DataFrame(self.__data['daily'])
 
-            done_hourly_df = converters.hourly_date_convert(hourly_df)
-            done_daily_df = converters.daily_date_convert(daily_df)
+            done_hourly_df = hourly_date_transform(hourly_df)
+            done_daily_df = daily_date_transform(daily_df)
 
             merged_df = pd.merge(done_hourly_df, done_daily_df[['date', 'sunrise_iso', 'sunset_iso']], on='date')
             merged_df.drop('date', axis=1, inplace=True)
