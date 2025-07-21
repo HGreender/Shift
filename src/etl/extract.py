@@ -2,7 +2,7 @@ import json
 import requests
 from typing import Dict, Any
 
-from src.utils.validators import validate_date
+from .utils.validators import validate_date
 
 
 class Extractor:

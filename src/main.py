@@ -1,6 +1,8 @@
 import sys
+import argparse
 
-from src.etl.extract import Extractor
+from etl.extract import Extractor
+from etl.transform import Transformer
 
 
 def run_pipeline(args):
@@ -11,13 +13,29 @@ def run_pipeline(args):
             raw_data = extractor.run_api_extraction()
         elif args.source == 'json':
             raw_data = Extractor.run_json_extraction(args.file_path)
+
+        transformer = Transformer(raw_data)
+        transformed_df = transformer.run()
+        print(transformed_df)
     except Exception as error:
         print(f'Error: {error}')
         sys.exit(1)
 
 
 def main():
-    pass
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--source', required=True, choices=['api', 'json'])
+    parser.add_argument('-start', '--start-date')
+    parser.add_argument('-end', '--end-date')
+
+    args = parser.parse_args()
+
+    if args.source == 'api' and (not args.start_date or not args.end_date):
+        parser.error("--start-date и --end-date обязательны для --source api.")
+    if args.source == 'json' and not args.file_path:
+        parser.error("--file-path обязателен для --source json.")
+
+    run_pipeline(args)
 
 
 if __name__ == '__main__':

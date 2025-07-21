@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Dict, Any
-from src.utils import converters
+from .utils import converters
 
 
 class Transformer:
