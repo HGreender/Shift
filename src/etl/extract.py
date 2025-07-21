@@ -3,6 +3,7 @@ from typing import Dict, Any
 
 from src.utils.validators import validate_date
 
+
 class Extractor:
     def __init__(
             self, start_date: str, end_date: str,
@@ -18,7 +19,7 @@ class Extractor:
         self.__latitude = latitude
         self.__longitude = longitude
 
-        self.__base_url = "https://api.open-meteo.com/v1/forecast"
+        self._base_url = "https://api.open-meteo.com/v1/forecast"
 
     @property
     def start_date(self) -> str:
@@ -77,7 +78,7 @@ class Extractor:
 
     def run(self) -> Dict[str, Any]:
         try:
-            response = requests.get(self.__base_url, params=self._params)
+            response = requests.get(self._base_url, params=self._params)
             response.raise_for_status()
             return response.json()
         except (requests.exceptions.RequestException, ValueError) as error:
