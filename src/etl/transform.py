@@ -53,7 +53,7 @@ def _convert_units(data: pd.DataFrame):
 
     if 'visibility' in df.columns:
         df['visibility_m'] = df['visibility'].apply(converters.feet_to_meters)
-        df.drop(f'{'visibility_m'}', axis=1, inplace=True)
+        df.drop(f'{'visibility'}', axis=1, inplace=True)
 
     drop_cols = ['wind_direction_10m', 'wind_direction_80m', 'visibility', 'weather_code']
     for col in drop_cols:
@@ -62,8 +62,25 @@ def _convert_units(data: pd.DataFrame):
 
     if 'relative_humidity_2m' in df.columns:
         df.rename(columns={'relative_humidity_2m': 'relative_humidity_2m_%'}, inplace=True)
-
     return df
+
+
+def _aggregate_data(grouped_df, suffix: str) -> pd.DataFrame:
+    agg_dict = {
+        f'avg_temperature_2m{suffix}': ('temperature_2m_celsius', 'mean'),
+        f'avg_relative_humidity_2m_%{suffix}': ('relative_humidity_2m_%', 'mean'),
+        f'avg_dew_point_2m{suffix}': ('dew_point_2m_celsius', 'mean'),
+        f'avg_apparent_temperature{suffix}': ('apparent_temperature_celsius', 'mean'),
+        f'avg_temperature_80m{suffix}': ('temperature_80m_celsius', 'mean'),
+        f'avg_temperature_120m{suffix}': ('temperature_120m_celsius', 'mean'),
+        f'avg_wind_speed_10m{suffix}': ('wind_speed_10m_m_per_s', 'mean'),
+        f'avg_wind_speed_80m{suffix}': ('wind_speed_80m_m_per_s', 'mean'),
+        f'avg_visibility{suffix}': ('visibility_m', 'mean'),
+        f'total_rain{suffix}': ('rain_mm', 'sum'),
+        f'total_showers{suffix}': ('showers_mm', 'sum'),
+        f'total_snowfall{suffix}': ('snowfall_mm', 'sum')
+    }
+    return grouped_df.agg(**agg_dict).round(2)
 
 
 class Transformer:
@@ -93,9 +110,11 @@ class Transformer:
 
             merged_df = pd.merge(done_hourly_df, done_daily_df[['date', 'sunrise_iso', 'sunset_iso']], on='date')
             merged_df = _convert_units(merged_df)
+
+            agg_24h = _aggregate_data(merged_df.groupby('date'), suffix='_24h')
             # merged_df.drop('date', axis=1, inplace=True)
 
-            return merged_df
+            return agg_24h
         except (KeyError, TypeError) as error:
             print(f"Transformer error: {error}")
             raise
