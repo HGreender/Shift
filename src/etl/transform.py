@@ -17,9 +17,9 @@ def _hourly_date_transform(data: pd.DataFrame) -> pd.DataFrame:
 def _daily_date_transform(data: pd.DataFrame) -> pd.DataFrame:
     df = pd.DataFrame()
     df['date'] = pd.to_datetime(data['time'], unit='s', utc=True).dt.date
-    df['sunrise_iso'] = pd.to_datetime(data['sunrise'], unit='s', utc=True).dt.strftime(
+    df['sunrise_iso'] = pd.to_datetime(data['sunrise'], unit='s').dt.strftime(
         '%Y-%m-%dT%H:%M:%SZ')
-    df['sunset_iso'] = pd.to_datetime(data['sunset'], unit='s', utc=True).dt.strftime(
+    df['sunset_iso'] = pd.to_datetime(data['sunset'], unit='s').dt.strftime(
         '%Y-%m-%dT%H:%M:%SZ')
     df['daylight_hours'] = data['daylight_duration'] / 3600
     return df
@@ -109,6 +109,7 @@ class Transformer:
             done_daily_df = _daily_date_transform(daily_df)
 
             merged_df = pd.merge(done_hourly_df, done_daily_df[['date', 'sunrise_iso', 'sunset_iso']], on='date')
+            # print(merged_df.info())
             merged_df = _convert_units(merged_df)
 
             agg_24h = _aggregate_data(merged_df.groupby('date'), suffix='_24h')
@@ -120,7 +121,10 @@ class Transformer:
             agg_daylight = _aggregate_data(daylight_df.groupby('date'), suffix='_daylight')
             # merged_df.drop('date', axis=1, inplace=True)
 
-            return agg_daylight
+            final_df = done_daily_df.set_index('date')
+            final_df = final_df.join(agg_24h).join(agg_daylight)
+
+            return final_df
         except (KeyError, TypeError) as error:
             print(f"Transformer error: {error}")
             raise
