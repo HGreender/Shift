@@ -112,9 +112,15 @@ class Transformer:
             merged_df = _convert_units(merged_df)
 
             agg_24h = _aggregate_data(merged_df.groupby('date'), suffix='_24h')
+
+            daylight_df = merged_df[
+                (merged_df['time'] >= merged_df['sunrise_iso']) &
+                (merged_df['time'] <= merged_df['sunset_iso'])
+                ]
+            agg_daylight = _aggregate_data(daylight_df.groupby('date'), suffix='_daylight')
             # merged_df.drop('date', axis=1, inplace=True)
 
-            return agg_24h
+            return agg_daylight
         except (KeyError, TypeError) as error:
             print(f"Transformer error: {error}")
             raise
