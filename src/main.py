@@ -5,6 +5,7 @@ import argparse
 from etl.extract import Extractor
 from etl.transform import Transformer
 from etl.load import Loader
+from etl.utils.db_tools import read_db
 
 
 def run_pipeline(args):
@@ -26,9 +27,9 @@ def run_pipeline(args):
             loader.load_to_csv()
         elif args.target == 'db':
             # db_path = os.getenv("DATABASE_FILE")
-            db_path = "./../../output/test.db"
+            db_path = "./../output/weather_data.db"
             if not db_path:
-                raise ValueError("os.getenv(\"DATABASE_FILE\") error")
+                raise ValueError("Database file not exist")
             loader.load_to_db(db_path)
 
     except Exception as error:
@@ -56,7 +57,7 @@ def main():
             self.source = 'api'
             self.start_date = "2025-07-23"
             self.end_date = "2025-07-24"
-            self.target = 'csv'
+            self.target = 'db'
 
     args = Args()
 
@@ -65,3 +66,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    df = read_db("./../output/weather_data.db", "weather_forecasts")
+    print(df.to_string())

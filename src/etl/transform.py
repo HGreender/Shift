@@ -105,6 +105,7 @@ def _structure_final_df(df: pd.DataFrame) -> pd.DataFrame:
 
 
 class Transformer:
+    # TODO: Если будет время, добавить валидацию и очистку данных на NaN-значения
     def __init__(self, raw_data: Dict[str, Any]):
         if not isinstance(raw_data, dict) or 'hourly' not in raw_data or 'daily' not in raw_data:
             raise ValueError("Dataframe initialization error in Transformer")
@@ -123,6 +124,7 @@ class Transformer:
 
     def run(self):
         try:
+            print('Start data transform...')
             hourly_df = pd.DataFrame(self.__data['hourly'])
             daily_df = pd.DataFrame(self.__data['daily'])
 
@@ -154,6 +156,8 @@ class Transformer:
             final_df = final_df.join(final_agg_df_for_join)
 
             final_df = _structure_final_df(final_df)
+
+            print('Data transform done!')
 
             return final_df
         except (KeyError, TypeError) as error:

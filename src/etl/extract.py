@@ -83,9 +83,13 @@ class Extractor:
         return params
 
     def run_api_extraction(self) -> Dict[str, Any]:
+        print('Start API extraction...')
         try:
             response = requests.get(self._base_url, params=self._params)
             response.raise_for_status()
+
+            print('API extraction done!')
+
             return response.json()
         except requests.exceptions.RequestException:
             raise
@@ -94,9 +98,13 @@ class Extractor:
 
     @staticmethod
     def run_json_extraction(file_path: str) -> Dict[str, Any]:
+        print('Start JSON extraction...')
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+
+            print('JSON extraction done!')
+
             return data
         except (FileNotFoundError, json.JSONDecodeError):
             raise
