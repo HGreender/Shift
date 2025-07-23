@@ -2,7 +2,7 @@ version: 'v2.18.1'
 
 
 services:
-    etl:
+    weather-etl:
         build:
             context: ./weather_service
             dockerfile: Dockerfile
