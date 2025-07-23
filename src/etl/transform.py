@@ -59,16 +59,13 @@ def _convert_units(data: pd.DataFrame):
     for col in drop_cols:
         if col in df.columns:
             df.drop(f'{col}', axis=1, inplace=True)
-
-    if 'relative_humidity_2m' in df.columns:
-        df.rename(columns={'relative_humidity_2m': 'relative_humidity_2m_%'}, inplace=True)
     return df
 
 
 def _aggregate_data(grouped_df, suffix: str) -> pd.DataFrame:
     agg_dict = {
         f'avg_temperature_2m{suffix}': ('temperature_2m_celsius', 'mean'),
-        f'avg_relative_humidity_2m_%{suffix}': ('relative_humidity_2m_%', 'mean'),
+        f'avg_relative_humidity_2m{suffix}': ('relative_humidity_2m', 'mean'),
         f'avg_dew_point_2m{suffix}': ('dew_point_2m_celsius', 'mean'),
         f'avg_apparent_temperature{suffix}': ('apparent_temperature_celsius', 'mean'),
         f'avg_temperature_80m{suffix}': ('temperature_80m_celsius', 'mean'),
@@ -81,6 +78,38 @@ def _aggregate_data(grouped_df, suffix: str) -> pd.DataFrame:
         f'total_snowfall{suffix}': ('snowfall_mm', 'sum')
     }
     return grouped_df.agg(**agg_dict).round(2)
+
+
+def _structure_final_df(df: pd.DataFrame) -> pd.DataFrame:
+    # Переименовываем колонки, чтобы убрать суффиксы
+    df.columns = [col.replace('_celsius', '').replace('_m_per_s', '').replace('_m', '').replace('_mm', '') for col in
+                  df.columns]
+
+    final_columns_order = [
+        # Почему я добавил эти данные? Для идентификации - чтобы знать,
+        # что это запрос, за какую дату он, для какого города.
+        # Ещё можно ввести ID со своей кодировкой, но такого дано не было
+        'date', 'latitude', 'longitude', 'timezone',
+
+        'avg_temperature_2m_24h', 'avg_relative_humidity_2m_24h', 'avg_dew_point_2m_24h',
+        'avg_apparent_temperature_24h', 'avg_temperature_80m_24h', 'avg_temperature_120m_24h',
+        'avg_wind_speed_10m_24h', 'avg_wind_speed_80m_24h', 'avg_visibility_24h',
+        'total_rain_24h', 'total_showers_24h', 'total_snowfall_24h',
+
+        'avg_temperature_2m_daylight', 'avg_relative_humidity_2m_daylight', 'avg_dew_point_2m_daylight',
+        'avg_apparent_temperature_daylight', 'avg_temperature_80m_daylight', 'avg_temperature_120m_daylight',
+        'avg_wind_speed_10m_daylight', 'avg_wind_speed_80m_daylight', 'avg_visibility_daylight',
+        'total_rain_daylight', 'total_showers_daylight', 'total_snowfall_daylight',
+
+        'wind_speed_10m_m_per_s', 'wind_speed_80m_m_per_s', 'temperature_2m_celsius',
+        'apparent_temperature_celsius', 'temperature_80m_celsius', 'temperature_120m_celsius',
+        'soil_temperature_0cm_celsius', 'soil_temperature_6cm_celsius', 'rain_mm', 'showers_mm', 'snowfall_mm',
+
+        'daylight_hours', 'sunset_iso', 'sunrise_iso'
+    ]
+
+    existing_columns = [col for col in final_columns_order if col in df.columns]
+    return df[existing_columns]
 
 
 class Transformer:
