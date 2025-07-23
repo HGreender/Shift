@@ -80,10 +80,8 @@ def _aggregate_data(grouped_df, suffix: str) -> pd.DataFrame:
 
 def _structure_final_df(df: pd.DataFrame) -> pd.DataFrame:
     final_columns_order = [
-        # Почему я добавил эти данные? Для идентификации - чтобы знать,
-        # что это запрос, за какую дату он, для какого города.
-        # Ещё можно ввести ID со своей кодировкой, но такого дано не было
-        'date', 'latitude', 'longitude', 'timezone',
+        # Почему я добавил время? Для идентификации
+        'time',
 
         'avg_temperature_2m_24h', 'avg_relative_humidity_2m_24h', 'avg_dew_point_2m_24h',
         'avg_apparent_temperature_24h', 'avg_temperature_80m_24h', 'avg_temperature_120m_24h',

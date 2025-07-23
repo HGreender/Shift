@@ -19,6 +19,8 @@ def run_pipeline(args):
         transformer = Transformer(raw_data)
         transformed_df = transformer.run()
 
+        # print(transformed_df.to_string())
+
         loader = Loader(transformed_df)
         if args.target == 'csv':
             loader.load_to_csv()

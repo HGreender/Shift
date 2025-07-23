@@ -21,7 +21,7 @@ class Loader:
             if dir_name:
                 os.makedirs(dir_name, exist_ok=True)
             print('Start saving CSV')
-            self.__df.to_csv(csv_path, index=True)
+            self.__df.to_csv(csv_path, index=False)
             print('CSV has been saved')
         except IOError:
             raise IOError('Failed load data to CSV-file')
