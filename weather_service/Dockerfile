@@ -9,8 +9,8 @@ RUN uv pip install --no-cache-dir -r requirements.txt --system
 
 COPY . .
 
-# RUN pytest /app/tests
-
 ENV PYTHONPATH=.
+
+RUN pytest /app/tests/ --verbose
 
 ENTRYPOINT ["python", "main.py"]
