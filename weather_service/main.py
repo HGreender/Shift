@@ -22,7 +22,9 @@ def run_pipeline(args):
 
         loader = Loader(transformed_df)
         if args.target == 'csv':
-            loader.load_to_csv()
+            if not args.output_file:
+                raise ValueError("Output file path is required for CSV target.")
+            loader.load_to_csv(args.output_file)
         elif args.target == 'db':
             db_path = os.getenv("DATABASE_FILE")
             # db_path = "./../output/weather_data.db"
@@ -42,13 +44,16 @@ def main():
     parser.add_argument('--file-path', help="Path to JSON-file")
     parser.add_argument('-start', '--start-date')
     parser.add_argument('-end', '--end-date')
+    parser.add_argument('-o', '--output-file', help="Path for output CSV file")
 
     args = parser.parse_args()
 
     if args.source == 'api' and (not args.start_date or not args.end_date):
-        parser.error("--start-date и --end-date обязательны для --source api.")
+        parser.error("--start-date and --end-date are required for the --source api")
     if args.source == 'json' and not args.file_path:
-        parser.error("--file-path обязателен для --source json.")
+        parser.error("--file-path is required for --source json")
+    if args.target == 'csv' and not args.output_file:
+        parser.error("--output-file is required for --target csv")
 
     # class Args:
     #     def __init__(self):
@@ -64,5 +69,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print('Done!')
     # df = read_db("./../output/weather_data.db", "weather_forecasts")
     # print(df.to_string())

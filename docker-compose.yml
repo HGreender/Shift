@@ -9,6 +9,7 @@ services:
         image: weather_etl
         container_name: weather_etl
         volumes:
-            - ./weather_service:/app/weather_service
+            - ./weather_service:/app
+            - ./data:/app/data
         environment:
             DATABASE_FILE: "/output/weather.db"

@@ -20,7 +20,7 @@ class Loader:
             raise ValueError("Empty DataFrame")
         self.__df = value
 
-    def load_to_csv(self, csv_path: str = "./../output/weather_data.csv"):
+    def load_to_csv(self, csv_path: str):
         try:
             dir_name = os.path.dirname(csv_path)
             if dir_name:
@@ -34,9 +34,11 @@ class Loader:
             print(f"load_to_csv unknown error")
             raise
 
-    def load_to_db(self, db_path: str = "./../output/weather_data.db", table_name: str = "weather_forecasts"):
+    def load_to_db(self, db_path: str = "data/weather_data.db", table_name: str = "weather_forecasts"):
         try:
-            os.makedirs(os.path.dirname(db_path), exist_ok=True)
+            dir_name = os.path.dirname(db_path)
+            if dir_name:
+                os.makedirs(dir_name, exist_ok=True)
 
             print('Connecting to SQL...')
             with sqlite3.connect(db_path) as conn:
