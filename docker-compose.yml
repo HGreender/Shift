@@ -12,4 +12,4 @@ services:
             - ./weather_service:/app
             - ./data:/app/data
         environment:
-            DATABASE_FILE: "/output/weather.db"
+            DATABASE_FILE: "/app/data/weather.db"
