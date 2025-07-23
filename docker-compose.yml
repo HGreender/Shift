@@ -1,0 +1,14 @@
+version: 'v2.18.1'
+
+
+services:
+    etl:
+        build:
+            context: ./weather_service
+            dockerfile: Dockerfile
+        image: weather_etl
+        container_name: weather_etl
+        volumes:
+            - ./weather_service:/app/weather_service
+        environment:
+            DATABASE_FILE: "/output/weather.db"
