@@ -17,10 +17,8 @@ def _hourly_date_transform(data: pd.DataFrame) -> pd.DataFrame:
 def _daily_date_transform(data: pd.DataFrame) -> pd.DataFrame:
     df = pd.DataFrame()
     df['date'] = pd.to_datetime(data['time'], unit='s', utc=True).dt.date
-    df['sunrise_iso'] = pd.to_datetime(data['sunrise'], unit='s').dt.strftime(
-        '%Y-%m-%dT%H:%M:%SZ')
-    df['sunset_iso'] = pd.to_datetime(data['sunset'], unit='s').dt.strftime(
-        '%Y-%m-%dT%H:%M:%SZ')
+    df['sunrise_iso'] = converters.unix_to_iso_8601(data['sunrise'])
+    df['sunset_iso'] = converters.unix_to_iso_8601(data['sunset'])
     df['daylight_hours'] = data['daylight_duration'] / 3600
     return df
 

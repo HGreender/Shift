@@ -5,6 +5,10 @@ INCH_TO_MM = 25.4
 FEET_TO_M = 0.3048
 
 
+def unix_to_iso_8601(date: pd.Series) -> pd.Series:
+    return pd.to_datetime(date, unit='s').dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
 def fahrenheit_to_celsius(temp_f: float) -> float | None:
     if pd.isna(temp_f):
         return None
