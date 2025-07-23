@@ -81,10 +81,6 @@ def _aggregate_data(grouped_df, suffix: str) -> pd.DataFrame:
 
 
 def _structure_final_df(df: pd.DataFrame) -> pd.DataFrame:
-    # Переименовываем колонки, чтобы убрать суффиксы
-    df.columns = [col.replace('_celsius', '').replace('_m_per_s', '').replace('_m', '').replace('_mm', '') for col in
-                  df.columns]
-
     final_columns_order = [
         # Почему я добавил эти данные? Для идентификации - чтобы знать,
         # что это запрос, за какую дату он, для какого города.
@@ -148,10 +144,20 @@ class Transformer:
                 (merged_df['time'] <= merged_df['sunset_iso'])
                 ]
             agg_daylight = _aggregate_data(daylight_df.groupby('date'), suffix='_daylight')
-            # merged_df.drop('date', axis=1, inplace=True)
 
-            final_df = done_daily_df.set_index('date')
-            final_df = final_df.join(agg_24h).join(agg_daylight)
+            final_agg_df = done_daily_df.set_index('date')
+            final_agg_df = final_agg_df.join(agg_24h).join(agg_daylight)
+
+            cols_to_drop = ['sunrise_iso', 'sunset_iso', 'daylight_hours']
+            final_agg_df_for_join = final_agg_df.drop(
+                columns=[col for col in cols_to_drop if col in final_agg_df.columns],
+                errors='ignore'
+            )
+
+            final_df = merged_df.set_index('date')
+            final_df = final_df.join(final_agg_df_for_join)
+
+            final_df = _structure_final_df(final_df)
 
             return final_df
         except (KeyError, TypeError) as error:

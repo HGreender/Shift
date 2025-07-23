@@ -40,8 +40,8 @@ def main():
     class Args:
         def __init__(self):
             self.source = 'api'
-            self.start_date = "2025-07-21"
-            self.end_date = "2025-07-21"
+            self.start_date = "2025-07-23"
+            self.end_date = "2025-07-24"
 
     args = Args()
 
