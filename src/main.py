@@ -26,7 +26,7 @@ def run_pipeline(args):
             # db_path = os.getenv("DATABASE_FILE")
             db_path = "./../../output/test.db"
             if not db_path:
-                raise ValueError("Переменная окружения DATABASE_FILE не установлена.")
+                raise ValueError("os.getenv(\"DATABASE_FILE\") error")
             loader.load_to_db(db_path)
 
     except Exception as error:
@@ -54,6 +54,7 @@ def main():
             self.source = 'api'
             self.start_date = "2025-07-23"
             self.end_date = "2025-07-24"
+            self.target = 'csv'
 
     args = Args()
 

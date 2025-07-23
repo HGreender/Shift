@@ -16,7 +16,13 @@ class Loader:
         pass
 
     def load_to_csv(self, csv_path: str = "./../../output/weather_data.csv"):
-        pass
+        try:
+            dir_name = os.path.dirname(csv_path)
+            if dir_name:
+                os.makedirs(dir_name, exist_ok=True)
+            self.__df.to_csv(csv_path, index=False)
+        except IOError:
+            raise IOError('Failed load data to CSV-file')
 
     def load_to_db(self, db_path: str, table_name: str = "weather_forecasts"):
         pass
