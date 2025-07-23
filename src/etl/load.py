@@ -15,8 +15,8 @@ class Loader:
     def _prepare_df_for_db(self, df: pd.DataFrame) -> pd.DataFrame:
         pass
 
-    def run_csv_load(self, csv_path: str = "output/weather_data.csv"):
+    def load_to_csv(self, csv_path: str = "./../../output/weather_data.csv"):
         pass
 
-    def run_db_load(self, db_path: str, table_name: str = "weather_forecasts"):
+    def load_to_db(self, db_path: str, table_name: str = "weather_forecasts"):
         pass

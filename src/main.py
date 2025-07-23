@@ -1,8 +1,10 @@
+import os
 import sys
 import argparse
 
 from etl.extract import Extractor
 from etl.transform import Transformer
+from etl.load import Loader
 
 
 def run_pipeline(args):
@@ -16,7 +18,17 @@ def run_pipeline(args):
 
         transformer = Transformer(raw_data)
         transformed_df = transformer.run()
-        print(transformed_df.to_string())
+
+        loader = Loader(transformed_df)
+        if args.target == 'csv':
+            loader.load_to_csv()
+        elif args.target == 'db':
+            # db_path = os.getenv("DATABASE_FILE")
+            db_path = "./../../output/test.db"
+            if not db_path:
+                raise ValueError("Переменная окружения DATABASE_FILE не установлена.")
+            loader.load_to_db(db_path)
+
     except Exception as error:
         print(f'Error: {error}')
         sys.exit(1)
