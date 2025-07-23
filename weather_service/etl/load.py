@@ -22,6 +22,7 @@ class Loader:
 
     def load_to_csv(self, csv_path: str):
         try:
+            csv_path = os.path.join('data', csv_path)
             dir_name = os.path.dirname(csv_path)
             if dir_name:
                 os.makedirs(dir_name, exist_ok=True)
