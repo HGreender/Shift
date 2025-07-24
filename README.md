@@ -32,10 +32,10 @@ Docker-Compose должен быть совместим с версией v2.18.
 `docker compose run --rm weather-etl --source api --target db --start-date 2025-07-20 --end-date 2025-07-22`
 
 ### 2. API -> CSV
-`docker compose run --rm weather-etl --source api --target csv --start-date 2025-07-20 --end-date 2025-07-22`
+`docker compose run --rm weather-etl --source api --target csv --start-date 2025-07-20 --end-date 2025-07-22 -o api_test.csv`
 
 ### 3. JSON -> База данных
-`docker compose run --rm weather-etl --source json --target db `
+`docker compose run --rm weather-etl --source json --target db -f inputs/json_test.json`
 
 ### 4. JSON -> CSV
-`docker compose run --rm weather-etl --source json --target csv `
+`docker compose run --rm weather-etl --source json --target csv -f inputs/json_test.json  -o json_test.csv`
