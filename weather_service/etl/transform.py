@@ -146,7 +146,7 @@ class Transformer:
             final_agg_df = done_daily_df.set_index('date')
             final_agg_df = final_agg_df.join(agg_24h).join(agg_daylight)
 
-            cols_to_drop = ['sunrise_iso', 'sunset_iso', 'daylight_hours']
+            cols_to_drop = ['sunrise_iso', 'sunset_iso']
             final_agg_df_for_join = final_agg_df.drop(
                 columns=[col for col in cols_to_drop if col in final_agg_df.columns],
                 errors='ignore'
