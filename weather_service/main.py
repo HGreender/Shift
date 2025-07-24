@@ -39,10 +39,10 @@ def run_pipeline(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--source', required=True, choices=['api', 'json'])
-    parser.add_argument('--target', required=True, choices=['csv', 'db'])
-    parser.add_argument('--file-path', help="Path to JSON-file")
-    parser.add_argument('-start', '--start-date')
-    parser.add_argument('-end', '--end-date')
+    parser.add_argument('-f', '--file-path', help="Path to input JSON-file source")
+    parser.add_argument('-start', '--start-date', help="Start date for API source")
+    parser.add_argument('-end', '--end-date', help="End date for API source")
+    parser.add_argument('-t', '--target', required=True, choices=['csv', 'db'])
     parser.add_argument('-o', '--output-file', help="Path for output CSV file")
 
     args = parser.parse_args()
@@ -53,15 +53,6 @@ def main():
         parser.error("--file-path is required for --source json")
     if args.target == 'csv' and not args.output_file:
         parser.error("--output-file is required for --target csv")
-
-    # class Args:
-    #     def __init__(self):
-    #         self.source = 'api'
-    #         self.start_date = "2025-07-23"
-    #         self.end_date = "2025-07-24"
-    #         self.target = 'db'
-    #
-    # args = Args()
 
     run_pipeline(args)
 
