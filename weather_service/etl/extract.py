@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 from typing import Dict, Any
@@ -99,6 +100,7 @@ class Extractor:
     @staticmethod
     def run_json_extraction(file_path: str) -> Dict[str, Any]:
         print('Start JSON extraction...')
+        file_path = os.path.join('/app', file_path)
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)

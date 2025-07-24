@@ -110,9 +110,9 @@ def test_run_api_extraction_json_decode_error(mock_get, extractor_instance):
 @patch('json.load', return_value={"hourly": {}, "daily": {}})
 def test_run_json_extraction_success(mock_json_load, mock_open):
     """Тестирование успешного извлечения данных из JSON-файла."""
-    result = Extractor.run_json_extraction("dummy_path.json")
+    result = Extractor.run_json_extraction("/app/dummy_path.json")
     assert result == {"hourly": {}, "daily": {}}
-    mock_open.assert_called_once_with("dummy_path.json", 'r', encoding='utf-8')
+    mock_open.assert_called_once_with("/app/dummy_path.json", 'r', encoding='utf-8')
     mock_json_load.assert_called_once()
 
 

@@ -10,6 +10,5 @@ services:
         container_name: weather_etl
         volumes:
             - ./weather_service:/app
-            - ./data:/app/data
         environment:
-            DATABASE_FILE: "/app/data/weather.db"
+            DATABASE_FILE: "/app/loader_data/SQL_DB/weather_data.db"

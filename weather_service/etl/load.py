@@ -24,7 +24,7 @@ class Loader:
 
     def load_to_csv(self, csv_path: str):
         try:
-            csv_path = os.path.join('data', csv_path)
+            csv_path = os.path.join('loader_data/CSV', csv_path)
             dir_name = os.path.dirname(csv_path)
             if dir_name:
                 os.makedirs(dir_name, exist_ok=True)
@@ -37,7 +37,7 @@ class Loader:
             print(f"load_to_csv unknown error")
             raise
 
-    def load_to_db(self, db_path: str = "data/weather_data.db", table_name: str = "weather_forecasts"):
+    def load_to_db(self, db_path: str = "SQL_DB/weather_data.db", table_name: str = "weather_forecasts"):
         try:
             dir_name = os.path.dirname(db_path)
             if dir_name:
