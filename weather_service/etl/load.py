@@ -5,6 +5,8 @@ import pandas as pd
 
 class Loader:
     def __init__(self, df: pd.DataFrame):
+        if not isinstance(df, pd.DataFrame) or df.empty:
+            raise ValueError("Empty DataFrame")
         self.__df = df
 
     # TODO: тоже перекинуть в валидатор
