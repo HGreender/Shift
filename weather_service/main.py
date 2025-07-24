@@ -60,5 +60,8 @@ def main():
 if __name__ == '__main__':
     main()
     print('Done!')
-    # df = read_db("./../output/weather_data.db", "weather_forecasts")
-    # print(df.to_string())
+
+    # answer = input('Do yo wanna print table?\nPrint "yes" if wanna: ')
+    # if (answer.lower() == 'yes') or (answer.lower() == 'yes'):
+    #     df = read_db(os.getenv("DATABASE_FILE"), "weather_forecasts")
+    #     print(df)

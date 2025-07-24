@@ -71,7 +71,7 @@ def test_load_to_csv_success(loader_instance, csv_test_path):
     """Тестирование успешной загрузки в CSV-файл."""
     loader_instance.load_to_csv(csv_test_path)
     # Теперь проверяем полный путь, который load.py фактически использовал
-    expected_full_path = os.path.join('data', csv_test_path)
+    expected_full_path = os.path.join('loader_data/CSV', csv_test_path)
     assert os.path.exists(expected_full_path)
     loaded_df = pd.read_csv(expected_full_path, parse_dates=['time'])
     pd.testing.assert_frame_equal(loaded_df, loader_instance.df)

@@ -1,5 +1,20 @@
 # Shift
 
+Перед началом работы удостоверьтесь, что у вас установлен Docker и Docker-Compose.
+Docker-Compose должен быть совместим с версией v2.18.1.
+
+**Важное примечание!** Вся работа с файлами должна производиться в директории `weather_service/`
+
+Например, если вы хотите загрузить JSON-файл для обработки, 
+можете поместить его так: `weather_service/inputs/json_test.json`
+
+Все итоговые данные будут сохранены в директории `weather_service/loader_data/`
+
+Перед запуском соберите контейнеры, выполнив команду 
+(необходимо находиться в корневой директории проекта): `docker-compose build`
+
+Тесты запускаются автоматически перед сборкой образа
+
 ### Аргументы командной строки
 - -s, --source (Обязательно):
 - - api: Для извлечения данных из Open-Meteo API.
@@ -17,7 +32,10 @@
 `docker compose run --rm weather-etl --source api --target db --start-date 2025-07-20 --end-date 2025-07-22`
 
 ### 2. API -> CSV
+`docker compose run --rm weather-etl --source api --target csv --start-date 2025-07-20 --end-date 2025-07-22`
 
 ### 3. JSON -> База данных
+`docker compose run --rm weather-etl --source json --target db `
 
 ### 4. JSON -> CSV
+`docker compose run --rm weather-etl --source json --target csv `
