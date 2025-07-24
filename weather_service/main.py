@@ -27,7 +27,6 @@ def run_pipeline(args):
             loader.load_to_csv(args.output_file)
         elif args.target == 'db':
             db_path = os.getenv("DATABASE_FILE")
-            # db_path = "./../output/weather_data.db"
             if not db_path:
                 raise ValueError("Database file not exist")
             loader.load_to_db(db_path)
